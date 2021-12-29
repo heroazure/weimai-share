@@ -53,4 +53,27 @@ describe('test Store', () => {
         expect(store.state.count).toEqual(102)
         expect(store.state.list.length).toEqual(1)
     })
+
+    test('多个返回object的同名事件', async () => {
+        const store = Store({
+            count: 0,
+            list: []
+        })
+
+        store.on('add', (state, payload) => {
+            state.count += 1
+            return state
+        })
+
+        store.on('add', (state, payload) => {
+            state.count += 3
+            state.list.push(payload)
+            return state
+        })
+
+        await store.dispatch('add', {id: 1, name: '第一'})
+
+        expect(store.state.count).toEqual(4)
+        expect(store.state.list.length).toEqual(1)
+    })
 })
