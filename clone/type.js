@@ -14,6 +14,6 @@ function typeOf(obj) {
     };
     return map[toString.call(obj)];
 }
-export default {
+module.exports = {
     typeOf
 }

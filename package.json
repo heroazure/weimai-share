@@ -3,7 +3,9 @@
   "scripts": {
     "test": "jest"
   },
-  "dependencies": {},
+  "dependencies": {
+    "jest": "^27.4.5"
+  },
   "devDependencies": {},
   "engines": {
     "node": ">=8.0.0"

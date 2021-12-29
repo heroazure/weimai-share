@@ -1,4 +1,4 @@
-import type from './type';
+const type = require('./type')
 /**
  * 深度克隆
  * @param data 数组或者普通对象
@@ -51,7 +51,7 @@ function merge(obj0,obj2){
     return obj1
 }
 
-export default {
+module.exports = {
     deepCopy,
     merge
 }
