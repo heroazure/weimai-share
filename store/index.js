@@ -1,5 +1,6 @@
 const clone = require('../clone')
 
+// 同名事件队列依次执行，返回值为Promise类型或者带有then方法的对象，需等待执行完再执行下一个同名事件
 const loop = function (list, data, state, idx) {
     let tmp, fn = list[idx++]
     if (!fn) return Promise.resolve(state)
@@ -15,15 +16,18 @@ const loop = function (list, data, state, idx) {
 
 const Store = function (obj) {
     let events = {}
-    let state = clone.deepCopy(obj)
+    let state = clone.deepCopy(obj || {})
     return {
         get state() {
             return state
         },
         on: function (key, cb) {
             events[key] = (events[key] || []).concat(cb)
+            // 执行返回函数，解除事件监听
+            return () => events[key].splice(events[key].indexOf(cb) >>> 0, 1)
         },
         dispatch: function (key, payload) {
+            // 执行完之后再更新state
             return loop(events[key] || [], payload, clone.deepCopy(state), 0).then(st => state = st)
         }
     }
